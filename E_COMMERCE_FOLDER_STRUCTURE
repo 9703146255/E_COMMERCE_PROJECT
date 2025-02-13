@@ -145,15 +145,17 @@ orders-api/
 │   │   │   │
 │   │   │   ├── entity/                      # JPA Entities
 │   │   │   │   ├── Orders.java             # Order entity (stores only customerId, addrId)
-│   │   │   │   ├── OrderItem.java          # OrderItem entity (linked to Orders)
+│   │   │   │   ├── OrderItem.java          # OrderItem entity (linked to Orders, Product)
 │   │   │   │
 │   │   │   ├── dto/                         # DTOs for external microservice communication
 │   │   │   │   ├── CustomerDTO.java        # Customer data from Customer_API
 │   │   │   │   ├── ShippingAddressDTO.java # Shipping address data from Customer_API
+│   │   │   │   ├── ProductDTO.java         # Product data from Product_API
 │   │   │   │
 │   │   │   ├── client/                      # Feign clients or RestTemplate services
 │   │   │   │   ├── CustomerClient.java     # REST call to Customer_API
 │   │   │   │   ├── ShippingAddressClient.java # REST call to fetch address
+│   │   │   │   ├── ProductClient.java      # REST call to Product_API
 │   │   │   │
 │   │   │   ├── repository/                  # Repository layer (Spring Data JPA)
 │   │   │   │   ├── OrdersRepository.java   # CRUD operations for Orders

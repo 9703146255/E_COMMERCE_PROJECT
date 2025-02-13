@@ -1,0 +1,626 @@
+------------------------
+E-COMMERCE-PROJECT
+------------------------
+
+
+1. Category Service
+2. Product Service
+3. Cart Service
+4. Customer Service
+5. Shipping Address Service
+6. Payment Service
+7. Order Service
+
+
+----------------------------------------------------------------------
+1. Category Service
+----------------------------------------------------------------------
+categoryId 						(UUID or Long, Primary Key)
+categoryName 					(String)
+categoryDescription 			(String)
+createdAt 						(Timestamp)
+updatedAt 						(Timestamp)
+
+----------------------------------------------------------------------
+2. Product Service
+----------------------------------------------------------------------
+productId 						(UUID or Long, Primary Key)
+productName 					(String)
+description 					(String)
+price 							(BigDecimal)
+quantity 						(Integer, available stock)
+categoryId 						(Foreign Key) [Products --> Category][Many-To-One]
+imageUrl 						(String)
+createdAt (Timestamp)
+updatedAt (Timestamp)
+----------------------------------------------------------------------
+3. Cart Services ************(We can implement in the froent end)************
+----------------------------------------------------------------------
+cartId 							(UUID or Long, Primary Key)
+customerId 						(Foreign Key, UUID)
+items 							(List of CartItem objects)
+	cartItemId 					(UUID)
+	productId 					(Foreign Key) 	[Cart --> Product][One-To-Many]
+	quantity 					(Integer)
+	price 						(BigDecimal, Price at the time of adding)
+totalPrice 						(BigDecimal)
+createdAt 						(Timestamp)
+updatedAt 						(Timestamp)
+
+
+----------------------------------------------------------------------
+4. Customer Service
+----------------------------------------------------------------------
+customerId 						(UUID or Long, Primary Key)
+name 							(String)
+email 							(String, Unique)
+phoneNumber 					(String, Unique)
+password 						(Hashed String)
+createdAt 						(Timestamp)
+updatedAt 						(Timestamp)
+
+
+
+----------------------------------------------------------------------
+5. Shipping Address Service
+----------------------------------------------------------------------
+addressId 						(UUID or Long, Primary Key)
+customerId 						(Foreign Key, UUID)[ShippingAddress-> Customer][One-to-Many]
+houseNumber 					(String)
+street 							(String)
+city 							(String)
+state 							(String)
+zipCode 						(String)
+createdAt 						(Timestamp)
+updatedAt 						(Timestamp)
+
+----------------------------------------------------------------------
+6. Payment Service
+----------------------------------------------------------------------
+paymentId 						(UUID or Long, Primary Key)
+customerId 						(Foreign Key, UUID)
+orderId 						(Foreign Key, UUID)
+paymentMethod 					(Enum: CREDIT_CARD, DEBIT_CARD, UPI, NET_BANKING)
+transactionId 					(String, Unique)
+paymentStatus 					(Enum: PENDING, SUCCESS, FAILED)
+amount 							(BigDecimal)
+paymentDate 					(Timestamp)
+
+
+----------------------------------------------------------------------
+7. Order Service
+----------------------------------------------------------------------
+orderId 					(UUID or Long, Primary Key)
+customerId 					(Foreign Key, UUID)
+orderTrackingNumber 		(String, Unique)
+items 						(List of OrderItem objects)
+orderItemId 				(UUID)    
+productId 					(Foreign Key)
+quantity 					(Integer)
+price 						(BigDecimal, Price at the time of order)
+totalPrice 					(BigDecimal)
+totalQuantity 				(Integer)
+shippingAddressId 			(Foreign Key, UUID)
+orderDate 					(Timestamp)
+status 						 (Enum: PLACED, PROCESSING, SHIPPED, DELIVERED, CANCELLED)
+paymentId 					(Foreign Key, UUID)
+
+
+
+Optional Services
+Inventory Service 			(to track stock updates separately)
+Review & Rating Service 	(for customer reviews)
+Notification Service 		(for email/SMS alerts)
+
+
+
+1Category Service
+2Product Service
+3Cart Service
+4Customer Service
+5Shipping Service
+6Order Service
+7Payment Service
+8Inventory Service
+9Notification Service
+--------------------------------------------------------------------------
+1Category Service
+--------------------------------------------------------------------------
+Manages product categories.
+CRUD operations for categories.
+
+--------------------------------------------------------------------------
+2Product Service
+--------------------------------------------------------------------------
+Manages product details.
+Handles product availability, pricing, and inventory.
+
+--------------------------------------------------------------------------
+3Cart Service
+--------------------------------------------------------------------------
+Manages shopping cart items per customer.
+Add, update, and remove items from the cart.
+
+--------------------------------------------------------------------------
+4Customer Service
+--------------------------------------------------------------------------
+Manages customer details (customerId, name, email, phone number).
+
+--------------------------------------------------------------------------
+5Shipping Service
+--------------------------------------------------------------------------
+Manages shipping addresses and delivery tracking.
+
+--------------------------------------------------------------------------
+6Order Service
+--------------------------------------------------------------------------
+Handles order creation, tracking, and history.
+
+--------------------------------------------------------------------------
+7Payment Service
+--------------------------------------------------------------------------
+Handles payment processing and transaction records.
+
+--------------------------------------------------------------------------
+Optional Microservices (if needed for scalability):
+--------------------------------------------------------------------------
+Inventory Service (if stock management needs to be separate from Product Service).
+
+--------------------------------------------------------------------------
+Notification Service (to send emails or SMS for order updates).
+--------------------------------------------------------------------------
+Review & Rating Service (if you allow customer reviews).
+
+--------------------------------------------------------------------------
+Communication Between Microservices:
+--------------------------------------------------------------------------
+Sync Communication (REST/GraphQL): Between Cart, Product, and Order Services.
+Async Communication (Kafka/RabbitMQ): For events like "Order Placed," "Payment Processed,"
+
+
+
+
+==============
+Sir DB Design
+==============
+-----------------------
+Product_Category
+-----------------------
+	category_id pk
+	category_name
+-----------------------
+Product
+-----------------------
+	product_id  PK
+	name
+	desc
+	title
+	unit_price
+	active[if active its display on froent end]
+	units_stock
+	date_created
+	date_updated
+-----------------------
+Customer
+-----------------------
+	customer_id(pk)
+	name
+	email(Unique)
+	phonoNo
+	psw_updated
+
+	last_created
+	last_updated
+-----------------------
+Shipping_Address
+-----------------------
+	addr_id PK
+	house_no
+	street
+	city
+	state
+	zipcode
+	country
+-----------------------
+Orders
+-----------------------
+	order_id
+	order_tracking_num
+	total_price
+	total_quantity
+	date_created
+	last_updated
+	delivery_date(for notification send to the customer)
+	order_status[CREATED,CANCELLED,DELIVERED]
+	payment_status
+	rozar_pay_order_id
+	rozar_pay_payment_id
+
+
+	customer_id FK
+	add_id FK
+-----------------------
+Order_Item
+-----------------------
+     order_item_id  PK
+     image_url
+     unit_price
+     quantity
+
+     product_id FK
+     order_id FK
+
+
+Microservices
+---------------------
+Product_API
+Customer_API
+Orders_API
+Notification_API
+Admin_API
+
+
+
+Database Design
+================
+
+
+---------------------
+1. Product_Category
+---------------------
+CREATE TABLE Product_Category (
+    category_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    category_name VARCHAR(255) NOT NULL
+);
+---------------------
+2. Product
+---------------------
+CREATE TABLE Product (
+    product_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    title VARCHAR(255),
+    unit_price DECIMAL(10, 2) NOT NULL,
+    active BOOLEAN DEFAULT TRUE,
+    units_stock INT NOT NULL,
+    date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    date_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    category_id BIGINT,
+    FOREIGN KEY (category_id) REFERENCES Product_Category(category_id)
+);
+---------------------
+3. Customer
+---------------------
+
+CREATE TABLE Customer (
+    customer_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    phone_no VARCHAR(15),
+    password VARCHAR(255) NOT NULL,
+    psw_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+---------------------
+4. Shipping_Address
+---------------------
+CREATE TABLE Shipping_Address (
+    addr_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    house_no VARCHAR(50),
+    street VARCHAR(255),
+    city VARCHAR(100),
+    state VARCHAR(100),
+    zipcode VARCHAR(20),
+    country VARCHAR(100),
+    customer_id BIGINT,
+    FOREIGN KEY (customer_id) REFERENCES Customer(customer_id)
+);
+
+---------------------
+5. Orders
+---------------------
+CREATE TABLE Orders (
+    order_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    order_tracking_num VARCHAR(255) UNIQUE NOT NULL,
+    total_price DECIMAL(10, 2) NOT NULL,
+    total_quantity INT NOT NULL,
+    date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    delivery_date TIMESTAMP,
+    order_status ENUM('CREATED', 'CANCELLED', 'DELIVERED') DEFAULT 'CREATED',
+    payment_status VARCHAR(50),
+    rozar_pay_order_id VARCHAR(255),
+    rozar_pay_payment_id VARCHAR(255),
+    customer_id BIGINT,
+    addr_id BIGINT,
+    FOREIGN KEY (customer_id) REFERENCES Customer(customer_id),
+    FOREIGN KEY (addr_id) REFERENCES Shipping_Address(addr_id)
+);
+
+---------------------
+6. Order_Item
+---------------------
+CREATE TABLE Order_Item (
+    order_item_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    image_url VARCHAR(255),
+    unit_price DECIMAL(10, 2) NOT NULL,
+    quantity INT NOT NULL,
+    product_id BIGINT,
+    order_id BIGINT,
+    FOREIGN KEY (product_id) REFERENCES Product(product_id),
+    FOREIGN KEY (order_id) REFERENCES Orders(order_id)
+);
+
+
+------------------------------------------
+Microservices Structure
+------------------------------------------
+-----------------------
+1. Product_API
+-----------------------
+Handles Product and Product Category management.
+
+Entities
+---------
+// ProductCategory.java
+@Entity
+public class ProductCategory {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long categoryId;
+
+    private String categoryName;
+
+    // Getters and Setters
+}
+
+// Product.java
+@Entity
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long productId;
+
+    private String name;
+    private String description;
+    private String title;
+    private Double unitPrice;
+    private Boolean active;
+    private Integer unitsStock;
+    private LocalDateTime dateCreated;
+    private LocalDateTime dateUpdated;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private ProductCategory category;
+
+    // Getters and Setters
+}
+
+
+
+APIs
+GET /api/categories: Fetch all product categories.
+
+POST /api/categories: Create a new product category.
+
+GET /api/products: Fetch all products.
+
+POST /api/products: Create a new product.
+
+GET /api/products/{id}: Fetch a product by ID.
+
+PUT /api/products/{id}: Update a product.
+
+DELETE /api/products/{id}: Delete a product.
+
+
+
+-----------------------
+2. Customer_API
+-----------------------
+Handles Customer and Shipping Address management.
+
+Entities
+---------
+// Customer.java
+@Entity
+public class Customer {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long customerId;
+
+    private String name;
+    private String email;
+    private String phoneNo;
+    private String password;
+    private LocalDateTime pswUpdated;
+    private LocalDateTime lastCreated;
+    private LocalDateTime lastUpdated;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<ShippingAddress> addresses;
+
+    // Getters and Setters
+}
+
+// ShippingAddress.java
+@Entity
+public class ShippingAddress {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long addrId;
+
+    private String houseNo;
+    private String street;
+    private String city;
+    private String state;
+    private String zipcode;
+    private String country;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id", nullable = false)
+    private Customer customer;
+
+    // Getters and Setters
+}
+
+
+APIs
+POST /api/customers: Register a new customer.
+
+GET /api/customers/{id}: Fetch customer details by ID.
+
+PUT /api/customers/{id}: Update customer details.
+
+POST /api/customers/{id}/addresses: Add a shipping address for a customer.
+
+GET /api/customers/{id}/addresses: Fetch all shipping addresses for a customer.
+
+-----------------------
+3. Orders_API
+-----------------------
+Handles Orders and Order Items management.
+
+
+// Orders.java
+@Entity
+public class Orders {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long orderId;
+
+    private String orderTrackingNum;
+    private Double totalPrice;
+    private Integer totalQuantity;
+    private LocalDateTime dateCreated;
+    private LocalDateTime lastUpdated;
+    private LocalDateTime deliveryDate;
+    private String orderStatus;
+    private String paymentStatus;
+    private String rozarPayOrderId;
+    private String rozarPayPaymentId;
+
+***********************************************************
+    Solution 1: Store Only IDs Instead of Objects
+    Modify your Orders entity like this:
+***********************************************************
+    @ManyToOne
+    @JoinColumn(name = "customer_id", nullable = false)
+    private Customer customer;                             //***************** other service
+
+    @ManyToOne
+    @JoinColumn(name = "addr_id", nullable = false)       //***************** other service
+    private ShippingAddress shippingAddress;
+    ***********************************************************
+     private Long customerId; // Store only the ID
+
+    private Long addrId; // Store only the ID
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderItem> orderItems;
+
+    // Getters and Setters
+}
+
+// OrderItem.java
+@Entity
+public class OrderItem {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long orderItemId;
+
+    private String imageUrl;
+    private Double unitPrice;
+    private Integer quantity;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)   //***************** other service
+    private Product product;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id", nullable = false)
+    private Orders order;
+
+    // Getters and Setters
+}
+
+
+APIs
+POST /api/orders: Create a new order.
+
+GET /api/orders/{id}: Fetch order details by ID.
+
+PUT /api/orders/{id}: Update order status.
+
+GET /api/orders/customer/{customerId}: Fetch all orders for a customer.
+
+-----------------------
+4. Notification_API
+-----------------------
+Handles sending notifications (e.g., email, SMS) for order updates.
+
+APIs
+POST /api/notifications/order-status: Send notification for order status updates.
+
+POST /api/notifications/payment-status: Send notification for payment status updates.
+
+-----------------------
+5. Admin_API
+-----------------------
+Handles administrative tasks like managing users, products, and orders.
+
+APIs
+GET /api/admin/products: Fetch all products (admin view).
+
+PUT /api/admin/products/{id}: Update product details (admin view).
+
+GET /api/admin/orders: Fetch all orders (admin view).
+
+PUT /api/admin/orders/{id}: Update order details (admin view).
+
+
+
+
+
+Each microservice has its own entities and APIs.
+
+The database design is normalized and follows best practices.
+
+You can use Spring Boot to implement these microservices with the provided dependencies.
+
+
+
+
+
+
+-----------------
+Vendor      one to many
+-------
+vendorId
+NAME 
+ADDRESS
+DETAILS
+
+
+vehicleId
+
+Vehicle
+--------
+           many to one
+
+vehicleId
+vehicleName
+
+@ManyToOne
+@JoinColumn(name="vendorId",mapppedBy="vendor")
+private Vendor vendor;
+
+
+
+Select ven.NAME, veh.vehicleName
+from vendor ven left join Vehicle veh
+where 
+group by count(veh.vehicleName);

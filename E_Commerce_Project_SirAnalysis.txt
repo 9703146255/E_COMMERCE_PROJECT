@@ -1,0 +1,80 @@
+==============
+Sir DB Design
+==============
+-----------------------
+Product_Category
+-----------------------
+	category_id pk
+	category_name
+-----------------------
+Product
+-----------------------
+	product_id  PK
+	name
+	desc
+	title
+	unit_price
+	active[if active its display on froent end]
+	units_stock
+	date_created
+	date_updated
+
+	category_id [fk]
+-----------------------
+Customer
+-----------------------
+	customer_id(pk)
+	name
+	email(Unique)
+	phonoNo
+	psw_updated
+
+	last_created
+	last_updated
+-----------------------
+Shipping_Address
+-----------------------
+	addr_id PK
+	house_no
+	street
+	city
+	state
+	zipcode
+	country
+-----------------------
+Orders
+-----------------------
+	order_id
+	order_tracking_num
+	total_price
+	total_quantity
+	date_created
+	last_updated
+	delivery_date(for notification send to the customer)
+	order_status[CREATED,CANCELLED,DELIVERED]
+	payment_status
+	rozar_pay_order_id
+	rozar_pay_payment_id
+
+
+	customer_id FK
+	add_id FK
+-----------------------
+Order_Item
+-----------------------
+     order_item_id  PK
+     image_url
+     unit_price
+     quantity
+
+     product_id FK
+     order_id FK
+
+
+Microservices
+---------------------
+Product_API
+Customer_API
+Orders_API
+Notification_API
+Admin_API

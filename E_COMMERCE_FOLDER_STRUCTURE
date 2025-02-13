@@ -130,3 +130,56 @@ ecommerce-microservices/
 │
 │── README.md                                # Project documentation
 │── pom.xml                                  # Parent Maven configuration
+
+
+
+orders-api/
+│── src/
+│   ├── main/
+│   │   ├── java/in/thiru/
+│   │   │   ├── OrdersApplication.java      # Main Spring Boot application class
+│   │   │   │
+│   │   │   ├── config/                     # Configuration classes
+│   │   │   │   ├── FeignConfig.java        # Feign client configuration (if needed)
+│   │   │   │   ├── RestTemplateConfig.java # Configuration for RestTemplate bean
+│   │   │   │
+│   │   │   ├── entity/                      # JPA Entities
+│   │   │   │   ├── Orders.java             # Order entity (stores only customerId, addrId)
+│   │   │   │   ├── OrderItem.java          # OrderItem entity (linked to Orders)
+│   │   │   │
+│   │   │   ├── dto/                         # DTOs for external microservice communication
+│   │   │   │   ├── CustomerDTO.java        # Customer data from Customer_API
+│   │   │   │   ├── ShippingAddressDTO.java # Shipping address data from Customer_API
+│   │   │   │
+│   │   │   ├── client/                      # Feign clients or RestTemplate services
+│   │   │   │   ├── CustomerClient.java     # REST call to Customer_API
+│   │   │   │   ├── ShippingAddressClient.java # REST call to fetch address
+│   │   │   │
+│   │   │   ├── repository/                  # Repository layer (Spring Data JPA)
+│   │   │   │   ├── OrdersRepository.java   # CRUD operations for Orders
+│   │   │   │   ├── OrderItemRepository.java # CRUD operations for OrderItem
+│   │   │   │
+│   │   │   ├── service/                     # Business logic layer
+│   │   │   │   ├── OrderService.java       # Service layer to handle order logic
+│   │   │   │
+│   │   │   ├── controller/                  # REST API controllers
+│   │   │   │   ├── OrderController.java    # API endpoints for Orders
+│   │   │   │
+│   │   │   ├── exception/                   # Custom exceptions
+│   │   │   │   ├── ResourceNotFoundException.java
+│   │   │   │
+│   │   │   ├── util/                        # Utility classes (if needed)
+│   │   │   │   ├── DateUtil.java           # Utility for date conversion
+│   │   │
+│   │   ├── resources/
+│   │   │   ├── application.yml             # Configuration file (DB, Feign, etc.)
+│   │   │   ├── logback-spring.xml          # Logging configuration (optional)
+│   │   │
+│   ├── test/                               # Unit and integration tests
+│   │   ├── java/in/thiru/
+│   │   │   ├── service/OrderServiceTest.java
+│   │   │   ├── controller/OrderControllerTest.java
+│── pom.xml                                 # Maven dependencies
+│── Dockerfile                              # Docker setup (if needed)
+│── README.md                               # Project documentation
+

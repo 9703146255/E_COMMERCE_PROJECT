@@ -1,0 +1,200 @@
+------------------------
+E-COMMERCE-PROJECT
+------------------------
+
+
+1. Category Service
+2. Product Service
+3. Cart Service
+4. Customer Service
+5. Shipping Address Service
+6. Payment Service
+7. Order Service
+
+
+----------------------------------------------------------------------
+1. Category Service
+----------------------------------------------------------------------
+categoryId 						(UUID or Long, Primary Key)
+categoryName 					(String)
+categoryDescription 			(String)
+createdAt 						(Timestamp)
+updatedAt 						(Timestamp)
+
+----------------------------------------------------------------------
+2. Product Service
+----------------------------------------------------------------------
+productId 						(UUID or Long, Primary Key)
+productName 					(String)
+description 					(String)
+price 							(BigDecimal)
+quantity 						(Integer, available stock)
+categoryId 						(Foreign Key) [Products --> Category][Many-To-One]
+imageUrl 						(String)
+createdAt (Timestamp)
+updatedAt (Timestamp)
+----------------------------------------------------------------------
+3. Cart Services ************(We can implement in the froent end)************
+----------------------------------------------------------------------
+cartId 							(UUID or Long, Primary Key)
+customerId 						(Foreign Key, UUID)
+items 							(List of CartItem objects)
+	cartItemId 					(UUID)
+	productId 					(Foreign Key) 	[Cart --> Product][One-To-Many]
+	quantity 					(Integer)
+	price 						(BigDecimal, Price at the time of adding)
+totalPrice 						(BigDecimal)
+createdAt 						(Timestamp)
+updatedAt 						(Timestamp)
+
+
+----------------------------------------------------------------------
+4. Customer Service
+----------------------------------------------------------------------
+customerId 						(UUID or Long, Primary Key)
+name 							(String)
+email 							(String, Unique)
+phoneNumber 					(String, Unique)
+password 						(Hashed String)
+createdAt 						(Timestamp)
+updatedAt 						(Timestamp)
+
+
+
+----------------------------------------------------------------------
+5. Shipping Address Service
+----------------------------------------------------------------------
+addressId 						(UUID or Long, Primary Key)
+customerId 						(Foreign Key, UUID)[ShippingAddress-> Customer][One-to-Many]
+houseNumber 					(String)
+street 							(String)
+city 							(String)
+state 							(String)
+zipCode 						(String)
+createdAt 						(Timestamp)
+updatedAt 						(Timestamp)
+
+----------------------------------------------------------------------
+6. Payment Service
+----------------------------------------------------------------------
+paymentId 						(UUID or Long, Primary Key)
+customerId 						(Foreign Key, UUID)
+orderId 						(Foreign Key, UUID)
+paymentMethod 					(Enum: CREDIT_CARD, DEBIT_CARD, UPI, NET_BANKING)
+transactionId 					(String, Unique)
+paymentStatus 					(Enum: PENDING, SUCCESS, FAILED)
+amount 							(BigDecimal)
+paymentDate 					(Timestamp)
+
+
+----------------------------------------------------------------------
+7. Order Service
+----------------------------------------------------------------------
+orderId 					(UUID or Long, Primary Key)
+customerId 					(Foreign Key, UUID)
+orderTrackingNumber 		(String, Unique)
+items 						(List of OrderItem objects)
+orderItemId 				(UUID)    
+productId 					(Foreign Key)
+quantity 					(Integer)
+price 						(BigDecimal, Price at the time of order)
+totalPrice 					(BigDecimal)
+totalQuantity 				(Integer)
+shippingAddressId 			(Foreign Key, UUID)
+orderDate 					(Timestamp)
+status 						 (Enum: PLACED, PROCESSING, SHIPPED, DELIVERED, CANCELLED)
+paymentId 					(Foreign Key, UUID)
+
+
+
+Optional Services
+Inventory Service 			(to track stock updates separately)
+Review & Rating Service 	(for customer reviews)
+Notification Service 		(for email/SMS alerts)
+
+
+--------------------------------------------------------------------------
+Category Service
+--------------------------------------------------------------------------
+Manages product categories.
+CRUD operations for categories.
+
+--------------------------------------------------------------------------
+Product Service
+--------------------------------------------------------------------------
+Manages product details.
+Handles product availability, pricing, and inventory.
+
+--------------------------------------------------------------------------
+Cart Service
+--------------------------------------------------------------------------
+Manages shopping cart items per customer.
+Add, update, and remove items from the cart.
+
+--------------------------------------------------------------------------
+Customer Service
+--------------------------------------------------------------------------
+Manages customer details (customerId, name, email, phone number).
+
+--------------------------------------------------------------------------
+Shipping Service
+--------------------------------------------------------------------------
+Manages shipping addresses and delivery tracking.
+
+--------------------------------------------------------------------------
+Order Service
+--------------------------------------------------------------------------
+Handles order creation, tracking, and history.
+
+--------------------------------------------------------------------------
+Payment Service
+--------------------------------------------------------------------------
+Handles payment processing and transaction records.
+
+--------------------------------------------------------------------------
+Optional Microservices (if needed for scalability):
+--------------------------------------------------------------------------
+Inventory Service (if stock management needs to be separate from Product Service).
+
+--------------------------------------------------------------------------
+Notification Service (to send emails or SMS for order updates).
+--------------------------------------------------------------------------
+Review & Rating Service (if you allow customer reviews).
+
+--------------------------------------------------------------------------
+Communication Between Microservices:
+--------------------------------------------------------------------------
+Sync Communication (REST/GraphQL): Between Cart, Product, and Order Services.
+Async Communication (Kafka/RabbitMQ): For events like "Order Placed," "Payment Processed," 
+
+
+==============
+Sir DB Design
+==============
+Product_Category
+	category_id pk
+	category_name
+
+Product
+	product_id  PK
+	name
+	desc
+	title
+	unit_price
+	active[if active its display on froent end]
+	units_stock
+	date_created
+	date_updated
+
+Customer
+	customer_id
+	name
+	email(Unique)
+	phonoNo
+	password_updated
+	last_created
+	last_updated
+
+Shipping_Address
+
+

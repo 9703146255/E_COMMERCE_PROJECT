@@ -1,0 +1,132 @@
+ecommerce-microservices/
+│── product-service/   # Manages products and categories
+│   ├── src/main/java/com/example/product/
+│   │   ├── controller/
+│   │   │   ├── ProductController.java       # Handles product-related requests (CRUD)
+│   │   │   ├── CategoryController.java      # Handles category-related requests
+│   │   ├── entity/
+│   │   │   ├── Product.java                 # Entity representing a product
+│   │   │   ├── ProductCategory.java         # Entity representing a product category
+│   │   ├── repository/
+│   │   │   ├── ProductRepository.java       # JPA repository for Product
+│   │   │   ├── ProductCategoryRepository.java # JPA repository for ProductCategory
+│   │   ├── service/
+│   │   │   ├── ProductService.java          # Business logic for products
+│   │   │   ├── CategoryService.java         # Business logic for categories
+│   │   ├── dto/
+│   │   │   ├── ProductDTO.java              # Data Transfer Object for Product
+│   │   │   ├── CategoryDTO.java             # Data Transfer Object for Category
+│   │   ├── exception/
+│   │   │   ├── ProductNotFoundException.java # Exception handling for missing products
+│   │   │   ├── GlobalExceptionHandler.java  # Global exception handling
+│   │   ├── config/
+│   │   │   ├── OpenAPIConfig.java           # Swagger/OpenAPI configuration
+│   │   ├── ProductServiceApplication.java   # Main Spring Boot application entry point
+│   ├── src/main/resources/
+│   │   ├── application.yml                  # Configuration file for Product Service
+│
+│── customer-service/  # Manages customer and shipping details
+│   ├── src/main/java/com/example/customer/
+│   │   ├── controller/
+│   │   │   ├── CustomerController.java      # Handles customer-related requests (CRUD)
+│   │   │   ├── AddressController.java       # Handles shipping address-related requests
+│   │   ├── entity/
+│   │   │   ├── Customer.java                # Entity representing a customer
+│   │   │   ├── ShippingAddress.java         # Entity representing shipping address
+│   │   ├── repository/
+│   │   │   ├── CustomerRepository.java      # JPA repository for Customer
+│   │   │   ├── AddressRepository.java       # JPA repository for Address
+│   │   ├── service/
+│   │   │   ├── CustomerService.java         # Business logic for Customers
+│   │   │   ├── AddressService.java          # Business logic for Addresses
+│   │   ├── dto/
+│   │   │   ├── CustomerDTO.java             # Data Transfer Object for Customer
+│   │   │   ├── AddressDTO.java              # Data Transfer Object for Address
+│   │   ├── exception/
+│   │   │   ├── CustomerNotFoundException.java # Exception for missing customer
+│   │   ├── CustomerServiceApplication.java  # Main Spring Boot application entry point
+│   ├── src/main/resources/
+│   │   ├── application.yml                  # Configuration file for Customer Service
+│
+│── order-service/     # Manages orders and order items
+│   ├── src/main/java/com/example/order/
+│   │   ├── controller/
+│   │   │   ├── OrderController.java         # Handles order-related requests (CRUD)
+│   │   ├── entity/
+│   │   │   ├── Orders.java                  # Entity representing an order
+│   │   │   ├── OrderItem.java               # Entity representing items in an order
+│   │   ├── repository/
+│   │   │   ├── OrderRepository.java         # JPA repository for Orders
+│   │   │   ├── OrderItemRepository.java     # JPA repository for OrderItem
+│   │   ├── service/
+│   │   │   ├── OrderService.java            # Business logic for orders
+│   │   ├── dto/
+│   │   │   ├── OrderDTO.java                # Data Transfer Object for Order
+│   │   ├── exception/
+│   │   │   ├── OrderNotFoundException.java  # Exception for missing orders
+│   │   ├── OrderServiceApplication.java     # Main Spring Boot application entry point
+│   ├── src/main/resources/
+│   │   ├── application.yml                  # Configuration file for Order Service
+│
+│   ├── **APIs used inside Order Service:**
+│   │   - `Product Service` (to fetch product details before placing an order)
+│   │   - `Customer Service` (to get customer details)
+│   │   - `Notification Service` (to send order confirmation emails/SMS)
+│
+│── notification-service/  # Handles sending email/SMS notifications
+│   ├── src/main/java/com/example/notification/
+│   │   ├── controller/
+│   │   │   ├── NotificationController.java  # Handles notification requests
+│   │   ├── service/
+│   │   │   ├── EmailNotificationService.java # Sends order confirmation emails
+│   │   │   ├── SmsNotificationService.java   # Sends order confirmation SMS
+│   │   ├── NotificationServiceApplication.java # Main Spring Boot application entry point
+│   ├── src/main/resources/
+│   │   ├── application.yml                  # Configuration file for Notification Service
+│
+│── admin-service/  # Admin panel for managing users, products, and orders
+│   ├── src/main/java/com/example/admin/
+│   │   ├── controller/
+│   │   │   ├── AdminController.java         # Handles admin-related requests
+│   │   ├── service/
+│   │   │   ├── AdminService.java            # Business logic for Admin operations
+│   │   ├── AdminServiceApplication.java     # Main Spring Boot application entry point
+│   ├── src/main/resources/
+│   │   ├── application.yml                  # Configuration file for Admin Service
+│
+│── api-gateway/  # API Gateway for routing requests
+│   ├── src/main/java/com/example/gateway/
+│   │   ├── config/
+│   │   │   ├── ApiGatewayConfig.java        # API Gateway configuration
+│   │   ├── GatewayApplication.java          # Main Spring Boot application entry point
+│   ├── src/main/resources/
+│   │   ├── application.yml                  # Configuration file for API Gateway
+│
+│── discovery-server/  # Service Discovery using Eureka
+│   ├── src/main/java/com/example/discovery/
+│   │   ├── DiscoveryServerApplication.java  # Eureka Server Application
+│   ├── src/main/resources/
+│   │   ├── application.yml                  # Configuration file for Discovery Server
+│
+│── config-server/  # Centralized configuration management
+│   ├── src/main/java/com/example/config/
+│   │   ├── ConfigServerApplication.java     # Spring Cloud Config Server Application
+│   ├── src/main/resources/
+│   │   ├── application.yml                  # Configuration file for Config Server
+│
+│── common-library/  # Shared DTOs and Exceptions across services
+│   ├── src/main/java/com/example/common/
+│   │   ├── dto/
+│   │   │   ├── CustomerDTO.java
+│   │   │   ├── ProductDTO.java
+│   │   │   ├── OrderDTO.java
+│   │   ├── exception/
+│   │   │   ├── CustomException.java
+│   ├── src/main/resources/
+│   │   ├── application.yml                  # Configuration file for Common Library
+│
+│── docker/
+│   ├── docker-compose.yml                   # Docker setup for all microservices
+│
+│── README.md                                # Project documentation
+│── pom.xml                                  # Parent Maven configuration

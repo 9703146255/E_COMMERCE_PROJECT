@@ -1,3 +1,4 @@
+
 ------------------------
 E-COMMERCE-PROJECT
 ------------------------
@@ -113,41 +114,51 @@ Review & Rating Service 	(for customer reviews)
 Notification Service 		(for email/SMS alerts)
 
 
+
+1Category Service
+2Product Service
+3Cart Service
+4Customer Service
+5Shipping Service
+6Order Service
+7Payment Service
+8Inventory Service
+9Notification Service
 --------------------------------------------------------------------------
-Category Service
+1Category Service
 --------------------------------------------------------------------------
 Manages product categories.
 CRUD operations for categories.
 
 --------------------------------------------------------------------------
-Product Service
+2Product Service
 --------------------------------------------------------------------------
 Manages product details.
 Handles product availability, pricing, and inventory.
 
 --------------------------------------------------------------------------
-Cart Service
+3Cart Service
 --------------------------------------------------------------------------
 Manages shopping cart items per customer.
 Add, update, and remove items from the cart.
 
 --------------------------------------------------------------------------
-Customer Service
+4Customer Service
 --------------------------------------------------------------------------
 Manages customer details (customerId, name, email, phone number).
 
 --------------------------------------------------------------------------
-Shipping Service
+5Shipping Service
 --------------------------------------------------------------------------
 Manages shipping addresses and delivery tracking.
 
 --------------------------------------------------------------------------
-Order Service
+6Order Service
 --------------------------------------------------------------------------
 Handles order creation, tracking, and history.
 
 --------------------------------------------------------------------------
-Payment Service
+7Payment Service
 --------------------------------------------------------------------------
 Handles payment processing and transaction records.
 
@@ -187,14 +198,59 @@ Product
 	date_updated
 
 Customer
-	customer_id
+	customer_id(pk)
 	name
 	email(Unique)
 	phonoNo
-	password_updated
+	psw_updated
+
 	last_created
 	last_updated
 
 Shipping_Address
+	addr_id PK
+	house_no
+	street
+	city
+	state
+	zipcode
+	country
+
+Orders
+	order_id
+	order_tracking_num
+	total_price
+	total_quantity
+	date_created
+	last_updated
+	delivery_date(for notification send to the customer)
+	order_status[CREATED,CANCELLED,DELIVERED]
+	payment_status
+	rozar_pay_order_id
+	rozar_pay_payment_id
+
+
+	customer_id FK
+	add_id FK
+
+Order_Item
+     order_item_id  PK
+     image_url
+     unit_price
+     quantity
+
+     product_id FK
+     order_id FK
+
+
+Microservices
+---------------------
+Product_API
+Customer_API
+Orders_API
+Notification_API
+Admin_API
+
+
 
 
